@@ -49,12 +49,10 @@ const TodoPage = () => {
   }
 
   useEffect(() => {
-    todoApi.getTodos().then((todos) => setTodos(todos.sort((a, b) => a.id - b.id)))
-  }, [])
-
-  useEffect(() => {
     if (!authCtx.isLoggedIn) {
       navigate('/')
+    } else {
+      todoApi.getTodos().then((todos) => setTodos(todos.sort((a, b) => a.id - b.id)))
     }
   }, [authCtx.isLoggedIn])
 
