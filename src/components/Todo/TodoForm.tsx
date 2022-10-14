@@ -1,11 +1,8 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import styled, { CSSProperties } from 'styled-components'
-import { Todo } from '../../lib/models/todo'
-
-let id = 1
 
 interface TodoFormProps {
-  onCreateTodo: (newTodo: Todo) => void
+  onCreateTodo: (newTodo: string) => void
   style?: CSSProperties
 }
 
@@ -19,8 +16,7 @@ const TodoForm = ({ style, onCreateTodo }: TodoFormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (value) {
-      const newTodo: Todo = { id: id++, todo: value, isCompleted: false, userId: 1 }
-      onCreateTodo(newTodo)
+      onCreateTodo(value)
       setValue('')
     }
   }

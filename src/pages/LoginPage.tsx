@@ -7,7 +7,6 @@ import { AuthContext } from '../lib/contexts/auth'
 
 const LoginPage = () => {
   const authCtx = useContext(AuthContext)
-  console.log(authCtx.isLoggedIn)
   const navigate = useNavigate()
   const [feedback, setFeedback] = useState<string | null>(null)
   const handleSubmit = async (values: { email: string; password: string }) => {

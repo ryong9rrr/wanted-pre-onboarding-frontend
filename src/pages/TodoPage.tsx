@@ -11,8 +11,9 @@ const TodoPage = () => {
   const navigate = useNavigate()
   const [todos, setTodos] = useState<Todo[]>([])
 
-  const handleCreateTodo = (todo: Todo) => {
-    setTodos((prev) => [...prev, todo])
+  const handleCreateTodo = async (todo: string) => {
+    const newTodo = await todoApi.createTodo({ todo })
+    setTodos((prev) => [...prev, newTodo])
   }
 
   useEffect(() => {
