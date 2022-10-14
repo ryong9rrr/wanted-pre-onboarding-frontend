@@ -12,7 +12,11 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (emailInput.current && passwordInput.current) {
-      onSubmit({ email: emailInput.current.value, password: passwordInput.current.value })
+      const email = emailInput.current.value
+      const password = passwordInput.current.value
+      if (email.length > 0 && password.length > 0) {
+        onSubmit({ email, password })
+      }
     }
   }
 
@@ -25,6 +29,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
           name="email"
           type="email"
           placeholder="이메일"
+          required
         />
         <AuthFormField
           ref={passwordInput}
@@ -32,6 +37,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
           name="password"
           type="password"
           placeholder="비밀번호"
+          required
         />
         <button type="submit">제출</button>
       </form>
