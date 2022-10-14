@@ -3,27 +3,27 @@ import { Todo } from '../lib/models/todo'
 import debounce from '../lib/utils/debounce'
 
 interface ManagingTodo extends Todo {
-  type: 'toggle'
+  type: 'TOGGLE'
 }
 
 class TodoManager {
-  todos: ManagingTodo[] = []
+  taskQueue: ManagingTodo[] = []
 
   toggleTodo(toggledTodo: Todo) {
-    const existingTaskIdx = this.todos.findIndex((todo) => todo.id === toggledTodo.id)
+    const existingTaskIdx = this.taskQueue.findIndex((todo) => todo.id === toggledTodo.id)
     if (existingTaskIdx > -1) {
-      this.todos.splice(existingTaskIdx, 1)
+      this.taskQueue.splice(existingTaskIdx, 1)
     } else {
-      this.todos.push({ type: 'toggle', ...toggledTodo })
+      this.taskQueue.push({ type: 'TOGGLE', ...toggledTodo })
     }
     debounce(async () => await this.run(), 1000)()
   }
 
   private async run() {
-    while (this.todos.length > 0) {
-      const todo = this.todos.shift() as ManagingTodo
+    while (this.taskQueue.length > 0) {
+      const todo = this.taskQueue.shift() as ManagingTodo
       switch (todo.type) {
-        case 'toggle':
+        case 'TOGGLE':
           await todoApi.updateTodo(todo.id, {
             todo: todo.todo,
             isCompleted: !todo.isCompleted,
