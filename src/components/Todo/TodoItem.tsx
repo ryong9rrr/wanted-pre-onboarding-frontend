@@ -5,12 +5,13 @@ import { Todo } from '../../lib/models/todo'
 interface TodoItemProps {
   todo: Todo
   onDeleteTodo: (todoId: number) => void
+  onToggleTodo: (todo: Todo) => void
 }
 
-const TodoItem = ({ todo, onDeleteTodo }: TodoItemProps) => {
+const TodoItem = ({ todo, onDeleteTodo, onToggleTodo }: TodoItemProps) => {
   return (
     <Container>
-      <button>완료</button>
+      <button onClick={onToggleTodo.bind(null, todo)}>완료</button>
       <Title todo={todo}>{todo.todo}</Title>
       <button>수정</button>
       <button onClick={onDeleteTodo.bind(null, todo.id)}>삭제</button>

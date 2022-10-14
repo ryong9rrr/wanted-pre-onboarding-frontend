@@ -22,6 +22,20 @@ const TodoPage = () => {
     await todoApi.deleteTodo(todoId)
   }
 
+  const handleToggleTodo = async (todo: Todo) => {
+    const nextTodos = todos.map((ptodo) => {
+      if (ptodo.id === todo.id) {
+        return { ...ptodo, isCompleted: !ptodo.isCompleted }
+      }
+      return ptodo
+    })
+    setTodos(nextTodos)
+    await todoApi.updateTodo(todo.id, {
+      todo: todo.todo,
+      isCompleted: !todo.isCompleted,
+    })
+  }
+
   useEffect(() => {
     todoApi.getTodos().then((todos) => setTodos(todos.sort((a, b) => a.id - b.id)))
   }, [])
@@ -41,7 +55,7 @@ const TodoPage = () => {
       <Main>
         <Wrapper>
           <TodoForm style={{ marginBottom: '16px' }} onCreateTodo={handleCreateTodo} />
-          <TodoList todos={todos} onDeleteTodo={handleDeleteTodo} />
+          <TodoList todos={todos} onDeleteTodo={handleDeleteTodo} onToggleTodo={handleToggleTodo} />
         </Wrapper>
       </Main>
     </>
