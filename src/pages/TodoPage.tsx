@@ -4,14 +4,19 @@ import styled from 'styled-components'
 import { AuthContext } from '../lib/contexts/auth'
 import { Todo } from '../lib/models/todo'
 import todoApi from '../lib/api/todo'
+import { TodoForm, TodoList } from '../components/Todo'
 
 const TodoPage = () => {
   const authCtx = useContext(AuthContext)
   const navigate = useNavigate()
   const [todos, setTodos] = useState<Todo[]>([])
 
+  const handleCreateTodo = (todo: Todo) => {
+    setTodos((prev) => [...prev, todo])
+  }
+
   useEffect(() => {
-    todoApi.getTodos().then((todos) => setTodos(todos))
+    todoApi.getTodos().then((todos) => setTodos(todos.sort((a, b) => a.id - b.id)))
   }, [])
 
   useEffect(() => {
@@ -26,7 +31,12 @@ const TodoPage = () => {
         <h1>원티드 10월 프리온보딩 사전과제</h1>
         <button onClick={() => authCtx.logout()}>로그아웃</button>
       </Header>
-      <Main>메인</Main>
+      <Main>
+        <Wrapper>
+          <TodoForm style={{ marginBottom: '16px' }} onCreateTodo={handleCreateTodo} />
+          <TodoList todos={todos} />
+        </Wrapper>
+      </Main>
     </>
   )
 }
@@ -34,6 +44,7 @@ const TodoPage = () => {
 export default TodoPage
 
 const Header = styled.header`
+  margin-bottom: 24px;
   box-sizing: border-box;
   width: 100%;
   padding: 24px;
@@ -41,6 +52,13 @@ const Header = styled.header`
 `
 
 const Main = styled.main`
-  box-sizing: border-box;
-  background-color: green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const Wrapper = styled.div`
+  width: 568px;
+  padding: 24px;
 `
