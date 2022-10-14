@@ -1,6 +1,8 @@
 # 2022 10월 원티드 프리온보딩 사전과제
 
-### [🚀🚀🚀 배포링크(클릭) 🚀🚀🚀]()
+### [🚀🚀🚀 배포링크(클릭) 🚀🚀🚀](https://classy-bonbon-d8cd7d.netlify.app/)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8c4393fa-057f-43cc-9edf-d385e352f322/deploy-status)](https://app.netlify.com/sites/classy-bonbon-d8cd7d/deploys)
 
 ---
 
