@@ -5,13 +5,14 @@ import TodoItem from './TodoItem'
 
 interface TodoListProps {
   todos: Todo[]
+  onDeleteTodo: (todoId: number) => void
 }
 
-const TodoList = ({ todos }: TodoListProps) => {
+const TodoList = ({ todos, onDeleteTodo }: TodoListProps) => {
   return (
     <Container>
       {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
+        <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />
       ))}
     </Container>
   )
