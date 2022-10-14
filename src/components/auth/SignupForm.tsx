@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import AuthFormField from './AuthFormField'
 import AuthFormTemplate from './AuthFormTemplate'
 
