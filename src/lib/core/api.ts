@@ -11,12 +11,14 @@ const createInstance = (url: string, config?: AxiosRequestConfig): AxiosInstance
   })
 }
 
-const auth = (instance: AxiosInstance): AxiosInstance => {
+const auth = (instance: AxiosInstance) => (token: string | null) => {
+  if (!token) {
+    throw new Error('Unauthorized')
+  }
   instance.interceptors.request.use(
     (config) => {
-      const token = window.localStorage.getItem('access_token')
       config.headers = {
-        Authorization: token || '',
+        Authorization: `Bearer ${token}`,
       }
       return config
     },
@@ -28,7 +30,7 @@ const auth = (instance: AxiosInstance): AxiosInstance => {
 export default class Api {
   private readonly API_END_POINT = API_END_POINT
   protected baseInstance: AxiosInstance
-  protected authInstance: AxiosInstance
+  protected authInstance: (token: string | null) => AxiosInstance
 
   constructor() {
     const instance = createInstance(this.API_END_POINT)
