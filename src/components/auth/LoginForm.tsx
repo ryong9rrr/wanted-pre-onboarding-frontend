@@ -10,14 +10,29 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const emailInput = useRef<HTMLInputElement>(null)
   const passwordInput = useRef<HTMLInputElement>(null)
   const handleSubmit = (e: FormEvent) => {
-    console.log('제출')
+    e.preventDefault()
+    if (emailInput.current && passwordInput.current) {
+      onSubmit({ email: emailInput.current.value, password: passwordInput.current.value })
+    }
   }
 
   return (
     <AuthFormTemplate type="login">
-      <form>
-        <AuthFormField label="이메일" name="email" type="email" placeholder="이메일" />
-        <AuthFormField label="비밀번호" name="password" type="password" placeholder="비밀번호" />
+      <form onSubmit={handleSubmit}>
+        <AuthFormField
+          ref={emailInput}
+          label="이메일"
+          name="email"
+          type="email"
+          placeholder="이메일"
+        />
+        <AuthFormField
+          ref={passwordInput}
+          label="비밀번호"
+          name="password"
+          type="password"
+          placeholder="비밀번호"
+        />
         <button type="submit">제출</button>
       </form>
     </AuthFormTemplate>

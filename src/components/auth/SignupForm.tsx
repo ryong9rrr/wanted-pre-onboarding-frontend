@@ -1,63 +1,135 @@
-import React, { ChangeEvent, useState } from 'react'
-import useForm from '../../hooks/useForm'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import AuthFormField from './AuthFormField'
 import AuthFormTemplate from './AuthFormTemplate'
 
-interface ErrorTextProps {
-  message: string
+const emailValidation =
+  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/g
+
+type Field = {
+  value: string
+  touched: boolean
+  error: string | null
 }
 
-const ErrorText = ({ message }: ErrorTextProps) => {
-  return <div style={{ color: 'tomato', marginTop: '3px' }}>{message}</div>
+interface SignupFormProps {
+  onSubmit: (values: { email: string; password: string }) => void
 }
 
-const SignupForm = () => {
-  const { values, handleChange, handleSubmit, errors } = useForm({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    onSubmit: () => {
-      console.log(values)
-    },
+const SignupForm = ({ onSubmit }: SignupFormProps) => {
+  const [email, setEmail] = useState<Field>({ value: '', touched: false, error: null })
+  const [password, setPassword] = useState<Field>({ value: '', touched: false, error: null })
+  const [passwordConfirm, setPasswordConfirm] = useState<Field>({
+    value: '',
+    touched: false,
+    error: null,
   })
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-  const passwordConfirmError = passwordConfirm.length > 0 && passwordConfirm !== values.password
+
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail((prev) => ({ ...prev, touched: true, value: e.target.value }))
+  }
+
+  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword((prev) => ({ ...prev, touched: true, value: e.target.value }))
+  }
 
   const handleChangePasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm(e.target.value)
+    setPasswordConfirm((prev) => ({ ...prev, touched: true, value: e.target.value }))
+  }
+
+  const handleBlurEmail = () => {
+    if (!emailValidation.test(email.value.trim())) {
+      setEmail((prev) => ({ ...prev, error: '올바른 이메일 형식이 아니에요.' }))
+    } else {
+      setEmail((prev) => ({ ...prev, error: null }))
+    }
+  }
+
+  const handleBlurPassword = () => {
+    if (password.value.length < 8) {
+      setPassword((prev) => ({ ...prev, error: '비밀번호는 8자리 이상 입력해주세요.' }))
+    } else {
+      setPassword((prev) => ({ ...prev, error: null }))
+    }
+
+    if (passwordConfirm.touched && password.value !== passwordConfirm.value) {
+      setPasswordConfirm((prev) => ({ ...prev, error: '동일한 비밀번호가 아닙니다.' }))
+    } else {
+      setPasswordConfirm((prev) => ({ ...prev, error: null }))
+    }
+  }
+
+  const handleBlurPasswordConfirm = () => {
+    if (password.value !== passwordConfirm.value) {
+      setPasswordConfirm((prev) => ({ ...prev, error: '동일한 비밀번호가 아닙니다.' }))
+    } else {
+      setPasswordConfirm((prev) => ({ ...prev, error: null }))
+    }
+  }
+
+  const check = () => {
+    if (email.value.trim() === '' || password.value === '' || passwordConfirm.value === '') {
+      return false
+    }
+    if (email.error || password.error || passwordConfirm.error) {
+      return false
+    }
+    return true
+  }
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (check()) {
+      onSubmit({ email: email.value, password: password.value })
+      return
+    }
+    if (email.value.trim() === '') {
+      setEmail((prev) => ({ ...prev, touched: true, error: '이메일을 입력해주세요.' }))
+    }
+    if (password.value === '') {
+      setPassword((prev) => ({ ...prev, touched: true, error: '비밀번호를 입력해주세요.' }))
+    }
+    if (passwordConfirm.value === '') {
+      setPasswordConfirm((prev) => ({
+        ...prev,
+        touched: true,
+        error: '비밀번호를 한번 더 입력해주세요.',
+      }))
+    }
   }
 
   return (
     <AuthFormTemplate type="signup">
-      <form>
+      <form onSubmit={handleSubmit}>
         <AuthFormField
           label="이메일"
           name="email"
           type="email"
           placeholder="이메일"
-          value={values.email}
-          onChange={handleChange}
+          value={email.value}
+          onChange={handleChangeEmail}
+          onBlur={handleBlurEmail}
+          errorText={email.touched && email.error ? email.error : ''}
         />
-        {errors.email && <ErrorText message="이메일이 올바르지 않습니다." />}
         <AuthFormField
           label="비밀번호"
           name="password"
           type="password"
           placeholder="비밀번호"
-          value={values.password}
-          onChange={handleChange}
+          value={password.value}
+          onChange={handleChangePassword}
+          onBlur={handleBlurPassword}
+          errorText={password.touched && password.error ? password.error : ''}
         />
-        {errors.password && <ErrorText message="비밀번호는 8자리 이상이어야 합니다." />}
         <AuthFormField
           label="비밀번호 확인"
           name="passwordConfirm"
           type="password"
           placeholder="비밀번호 확인"
-          value={passwordConfirm}
+          value={passwordConfirm.value}
           onChange={handleChangePasswordConfirm}
+          onBlur={handleBlurPasswordConfirm}
+          errorText={passwordConfirm.touched && passwordConfirm.error ? passwordConfirm.error : ''}
         />
-        {passwordConfirmError && <ErrorText message="비밀번호가 동일하지 않습니다." />}
         <button type="submit">제출</button>
       </form>
     </AuthFormTemplate>
