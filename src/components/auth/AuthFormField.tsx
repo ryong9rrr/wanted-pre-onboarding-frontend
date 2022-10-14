@@ -1,19 +1,21 @@
 import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
+import ErrorText from './ErrorText'
 
 interface FormFieldProp extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
-  error?: string
+  errorText?: string
 }
 
 const FormField: React.ForwardRefRenderFunction<HTMLInputElement, FormFieldProp> = (
-  { label, ...props }: FormFieldProp,
+  { label, errorText, ...props }: FormFieldProp,
   ref,
 ) => {
   return (
     <Field>
       <label htmlFor={props.name}>{label}</label>
       <input ref={ref} autoComplete="off" {...props} />
+      {errorText && <ErrorText message={errorText} />}
     </Field>
   )
 }
