@@ -1,10 +1,14 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { SignupForm } from '../components/auth'
 import authApi from '../lib/api/auth'
+import { AuthContext } from '../lib/contexts/auth'
 
 const SignPage = () => {
+  const authCtx = useContext(AuthContext)
+  const navigate = useNavigate()
   const [feedback, setFeedback] = useState<string | null>(null)
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
@@ -20,6 +24,12 @@ const SignPage = () => {
       setFeedback('회원가입에 실패했습니다. 현재 서버에 문제가 있는 것 같아요.')
     }
   }
+
+  useEffect(() => {
+    if (authCtx.isLoggedIn) {
+      navigate('/todo')
+    }
+  }, [])
 
   return (
     <Container>
