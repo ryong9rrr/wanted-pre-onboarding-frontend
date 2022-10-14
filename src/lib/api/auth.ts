@@ -1,7 +1,10 @@
 import Api from '../core/api'
 
 class AuthApi extends Api {
-  async signup(requestBody: { email: string; password: string }): Promise<{ access_token: string }> {
+  async signup(requestBody: {
+    email: string
+    password: string
+  }): Promise<{ access_token: string }> {
     return await this.baseInstance.post('/auth/signup', requestBody)
   }
 

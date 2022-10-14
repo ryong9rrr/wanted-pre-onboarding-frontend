@@ -10,7 +10,10 @@ class TodoApi extends Api {
     return await this.authInstance.get('/todos')
   }
 
-  async updateTodo(todoId: number, requestBody: { todo: string; isCompleted: boolean }): Promise<Todo> {
+  async updateTodo(
+    todoId: number,
+    requestBody: { todo: string; isCompleted: boolean },
+  ): Promise<Todo> {
     return await this.authInstance.put(`/todos/${todoId}`, requestBody)
   }
 
