@@ -1,9 +1,6 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react'
 import AuthFormField from './AuthFormField'
 import AuthFormTemplate from './AuthFormTemplate'
-
-const emailValidation =
-  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/g
 
 type Field = {
   value: string
@@ -16,24 +13,45 @@ interface SignupFormProps {
 }
 
 const SignupForm = ({ onSubmit }: SignupFormProps) => {
-  const [email, setEmail] = useState<Field>({ value: '', touched: false, error: null })
-  const [password, setPassword] = useState<Field>({ value: '', touched: false, error: null })
+  const emailValidation =
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/g
+
+  const [email, setEmail] = useState<Field>({
+    value: '',
+    touched: false,
+    error: '이메일을 입력해주세요.',
+  })
+  const [password, setPassword] = useState<Field>({
+    value: '',
+    touched: false,
+    error: '비밀번호를 입력해주세요.',
+  })
   const [passwordConfirm, setPasswordConfirm] = useState<Field>({
     value: '',
     touched: false,
-    error: null,
+    error: '비밀번호를 한번 더 입력해주세요.',
   })
 
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail((prev) => ({ ...prev, touched: true, value: e.target.value }))
+    setEmail({ error: null, touched: true, value: e.target.value })
   }
 
   const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword((prev) => ({ ...prev, touched: true, value: e.target.value }))
+    setPassword({ error: null, touched: true, value: e.target.value })
+    if (passwordConfirm.touched && passwordConfirm.value !== e.target.value) {
+      setPasswordConfirm((prev) => ({
+        ...prev,
+        error: '동일한 비밀번호가 아닙니다.',
+      }))
+    }
   }
 
   const handleChangePasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm((prev) => ({ ...prev, touched: true, value: e.target.value }))
+    setPasswordConfirm({
+      error: password.value !== e.target.value ? '동일한 비밀번호가 아닙니다.' : null,
+      touched: true,
+      value: e.target.value,
+    })
   }
 
   const handleBlurEmail = () => {
@@ -51,51 +69,18 @@ const SignupForm = ({ onSubmit }: SignupFormProps) => {
       setPassword((prev) => ({ ...prev, error: null }))
     }
 
-    if (passwordConfirm.touched && password.value !== passwordConfirm.value) {
-      setPasswordConfirm((prev) => ({ ...prev, error: '동일한 비밀번호가 아닙니다.' }))
-    } else {
+    if (passwordConfirm.touched && password.value === passwordConfirm.value) {
       setPasswordConfirm((prev) => ({ ...prev, error: null }))
     }
-  }
-
-  const handleBlurPasswordConfirm = () => {
-    if (password.value !== passwordConfirm.value) {
-      setPasswordConfirm((prev) => ({ ...prev, error: '동일한 비밀번호가 아닙니다.' }))
-    } else {
-      setPasswordConfirm((prev) => ({ ...prev, error: null }))
-    }
-  }
-
-  const check = () => {
-    if (email.value.trim() === '' || password.value === '' || passwordConfirm.value === '') {
-      return false
-    }
-    if (email.error || password.error || passwordConfirm.error) {
-      return false
-    }
-    return true
   }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (check()) {
-      onSubmit({ email: email.value, password: password.value })
-      return
-    }
-    if (email.value.trim() === '') {
-      setEmail((prev) => ({ ...prev, touched: true, error: '이메일을 입력해주세요.' }))
-    }
-    if (password.value === '') {
-      setPassword((prev) => ({ ...prev, touched: true, error: '비밀번호를 입력해주세요.' }))
-    }
-    if (passwordConfirm.value === '') {
-      setPasswordConfirm((prev) => ({
-        ...prev,
-        touched: true,
-        error: '비밀번호를 한번 더 입력해주세요.',
-      }))
-    }
+    onSubmit({ email: email.value, password: password.value })
   }
+
+  const summittable =
+    email.error === null && password.error === null && passwordConfirm.error === null
 
   return (
     <AuthFormTemplate type="signup">
@@ -127,10 +112,11 @@ const SignupForm = ({ onSubmit }: SignupFormProps) => {
           placeholder="비밀번호 확인"
           value={passwordConfirm.value}
           onChange={handleChangePasswordConfirm}
-          onBlur={handleBlurPasswordConfirm}
           errorText={passwordConfirm.touched && passwordConfirm.error ? passwordConfirm.error : ''}
         />
-        <button type="submit">제출</button>
+        <button type="submit" disabled={!summittable}>
+          제출
+        </button>
       </form>
     </AuthFormTemplate>
   )
