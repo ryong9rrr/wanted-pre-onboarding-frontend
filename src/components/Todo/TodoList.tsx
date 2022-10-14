@@ -7,9 +7,10 @@ interface TodoListProps {
   todos: Todo[]
   onDeleteTodo: (todoId: number) => void
   onToggleTodo: (todo: Todo) => void
+  onEditTodo: (todo: Todo) => void
 }
 
-const TodoList = ({ todos, onDeleteTodo, onToggleTodo }: TodoListProps) => {
+const TodoList = ({ todos, onDeleteTodo, onToggleTodo, onEditTodo }: TodoListProps) => {
   return (
     <Container>
       {todos.map((todo) => (
@@ -18,6 +19,7 @@ const TodoList = ({ todos, onDeleteTodo, onToggleTodo }: TodoListProps) => {
           todo={todo}
           onDeleteTodo={onDeleteTodo}
           onToggleTodo={onToggleTodo}
+          onEditTodo={onEditTodo}
         />
       ))}
     </Container>

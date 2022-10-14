@@ -22,17 +22,31 @@ const TodoPage = () => {
     await todoApi.deleteTodo(todoId)
   }
 
-  const handleToggleTodo = async (todo: Todo) => {
-    const nextTodos = todos.map((ptodo) => {
-      if (ptodo.id === todo.id) {
-        return { ...ptodo, isCompleted: !ptodo.isCompleted }
+  const handleToggleTodo = async (toggledTodo: Todo) => {
+    const nextTodos = todos.map((todo) => {
+      if (todo.id === toggledTodo.id) {
+        return { ...todo, isCompleted: !todo.isCompleted }
       }
-      return ptodo
+      return todo
     })
     setTodos(nextTodos)
-    await todoApi.updateTodo(todo.id, {
-      todo: todo.todo,
-      isCompleted: !todo.isCompleted,
+    await todoApi.updateTodo(toggledTodo.id, {
+      todo: toggledTodo.todo,
+      isCompleted: !toggledTodo.isCompleted,
+    })
+  }
+
+  const handleEditTodo = async (edittedTodo: Todo) => {
+    const nextTodos = todos.map((todo) => {
+      if (todo.id === edittedTodo.id) {
+        return { ...todo, todo: edittedTodo.todo }
+      }
+      return todo
+    })
+    setTodos(nextTodos)
+    await todoApi.updateTodo(edittedTodo.id, {
+      todo: edittedTodo.todo,
+      isCompleted: edittedTodo.isCompleted,
     })
   }
 
@@ -55,7 +69,12 @@ const TodoPage = () => {
       <Main>
         <Wrapper>
           <TodoForm style={{ marginBottom: '16px' }} onCreateTodo={handleCreateTodo} />
-          <TodoList todos={todos} onDeleteTodo={handleDeleteTodo} onToggleTodo={handleToggleTodo} />
+          <TodoList
+            todos={todos}
+            onDeleteTodo={handleDeleteTodo}
+            onToggleTodo={handleToggleTodo}
+            onEditTodo={handleEditTodo}
+          />
         </Wrapper>
       </Main>
     </>
