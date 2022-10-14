@@ -1,19 +1,35 @@
 # 2022 10월 원티드 프리온보딩 사전과제
 
-1. [데모 영상 및 배포 링크](#👀-데모-영상-및-배포-링크)
-2. [프로젝트 실행방법](#🚀-프로젝트-실행방법)
-3. [주요 기술 스택](#🛠-주요-기술-스택)
-4. [공통 요구 사항](#📝-공통-요구사항)
-5. [기능 요구 사항](#✅-기능-요구사항)
-6. [폴더 구조](#🗂-폴더-구조)
+### [🚀🚀🚀 배포링크(클릭) 🚀🚀🚀]()
 
 ---
 
-## 👀 데모 영상 및 배포 링크
+1. [간단 데모 gif](#1)
+2. [프로젝트 실행방법](#2)
+3. [주요 기술 스택](#3)
+4. [공통 요구 사항](#4)
+5. [기능 요구 사항](#5)
+6. [폴더 구조](#6)
 
 ---
 
-## 🚀 프로젝트 실행방법
+<h2 id="1">👀 간단 데모 gif</h2>
+
+### 회원가입 폼
+
+<img src="https://user-images.githubusercontent.com/64957267/195921937-4428928f-a951-4433-963a-b8d4866f4587.gif" />
+
+### 로그인 폼
+
+<img src="https://user-images.githubusercontent.com/64957267/195921946-3942ac84-f466-498d-a61a-9b4e599b256f.gif" />
+
+### 투두리스트
+
+<img src="https://user-images.githubusercontent.com/64957267/195921953-6683d76c-7d0b-4106-b6e1-b74964a95998.gif" />
+
+---
+
+<h2 id="2">🚀 프로젝트 실행방법</h2>
 
 1. 이 레포지토리를 clone하고 의존성을 설치해주세요.
 
@@ -25,7 +41,7 @@
 
 ---
 
-## 🛠 주요 기술 스택
+<h2 id="3">🛠 주요 기술 스택</h2>
 
 - npm `v8.11.0`
 - typescript
@@ -36,7 +52,7 @@
 
 ---
 
-## 📝 공통 요구사항
+<h2 id="4">📝 공통 요구사항</h2>
 
 > ✔️ 공통 요구사항을 모두 만족시켰습니다.
 
@@ -49,14 +65,12 @@
 
 ---
 
-## ✅ 기능 요구사항
+<h2 id="5">✅ 기능 요구사항</h2>
 
 > ✔️ 필수 구현사항을 모두 구현했습니다.
 > 필수 구현사항 외에도 추가적으로 구현한 기능들이 몇 가지 있습니다.
 
 ## Assignment1. 폼
-
-> 여기에 로그인, 회원가입 관련 이미지
 
 - [x] / 경로에 로그인 / 회원가입 기능을 개발해주세요.
 - [x] 페이지 안에 이메일 입력창, 비밀번호 입력창, 제출 버튼이 포함된 형태로 구성해주세요.
@@ -72,8 +86,6 @@
 
 ## Assignment2. 네트워크 통신, 인증
 
-> 여기에 로그인 시 이미지
-
 - [x] "로그인" 시 올바른 응답을 받았다면 `/todo` 경로로 이동
 - [x] "로그인" 시 서버에서 JWT를 받으면 로컬 스토리지에 저장한다.
 
@@ -82,8 +94,6 @@
 - [x] 로그인, 회원가입 시 200번대가 아닌 응답이 발생하면 사용자에게 피드백을 한다.
 
 ## Assignment3. 인증과 리다이렉트
-
-> 여기에 리다이렉트 시 이미지
 
 - [x] 로컬 스토리지에 토큰이 있는 상태로 / 페이지에 접속한다면 /todo 경로로 리다이렉트 시켜주세요.
 - [x] 로컬 스토리지에 토큰이 없는 상태로 /todo페이지에 접속한다면 / 경로로 리다이렉트 시켜주세요.
@@ -112,6 +122,56 @@
 
 ---
 
-## 🗂 폴더 구조
+<h2 id="6">🗂 폴더 구조</h2>
 
-todo - 폴더 구조 tree로 넣기
+<details>
+<summary>폴더 구조</summary>
+<div markdown="1">
+
+```
+src
+ ┣ components
+ ┃ ┣ Todo
+ ┃ ┃ ┣ TodoForm.tsx
+ ┃ ┃ ┣ TodoItem.tsx
+ ┃ ┃ ┣ TodoList.tsx
+ ┃ ┃ ┗ index.ts
+ ┃ ┗ auth
+ ┃ ┃ ┣ AuthFormField.tsx
+ ┃ ┃ ┣ AuthFormTemplate.tsx
+ ┃ ┃ ┣ ErrorText.tsx
+ ┃ ┃ ┣ LoginForm.tsx
+ ┃ ┃ ┣ SignupForm.tsx
+ ┃ ┃ ┗ index.ts
+ ┣ lib
+ ┃ ┣ api
+ ┃ ┃ ┣ auth.ts
+ ┃ ┃ ┗ todo.ts
+ ┃ ┣ contexts
+ ┃ ┃ ┗ auth.tsx
+ ┃ ┣ core
+ ┃ ┃ ┗ api.ts
+ ┃ ┣ models
+ ┃ ┃ ┗ todo.ts
+ ┃ ┗ utils
+ ┃ ┃ ┣ debounce.ts
+ ┃ ┃ ┗ tokenStorage.ts
+ ┣ modules
+ ┃ ┗ todoManager.ts
+ ┣ pages
+ ┃ ┣ LoginPage.tsx
+ ┃ ┣ SignupPage.tsx
+ ┃ ┣ TodoPage.tsx
+ ┃ ┗ index.ts
+ ┣ App.css
+ ┣ App.test.tsx
+ ┣ App.tsx
+ ┣ index.css
+ ┣ index.tsx
+ ┣ react-app-env.d.ts
+ ┣ reportWebVitals.ts
+ ┗ setupTests.ts
+```
+
+</div>
+</details>
