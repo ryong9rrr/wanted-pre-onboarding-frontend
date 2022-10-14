@@ -5,6 +5,7 @@ import { AuthContext } from '../lib/contexts/auth'
 import { Todo } from '../lib/models/todo'
 import todoApi from '../lib/api/todo'
 import { TodoForm, TodoList } from '../components/Todo'
+import todoManager from '../modules/todoManager'
 
 const TodoPage = () => {
   const authCtx = useContext(AuthContext)
@@ -30,10 +31,7 @@ const TodoPage = () => {
       return todo
     })
     setTodos(nextTodos)
-    await todoApi.updateTodo(toggledTodo.id, {
-      todo: toggledTodo.todo,
-      isCompleted: !toggledTodo.isCompleted,
-    })
+    todoManager.toggleTodo(toggledTodo)
   }
 
   const handleEditTodo = async (edittedTodo: Todo) => {
