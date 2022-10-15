@@ -1,45 +1,69 @@
-import React, { FormEvent, useRef } from 'react'
+import React from 'react'
 import AuthFormField from './AuthFormField'
 import AuthFormTemplate from './AuthFormTemplate'
+import useForm, { Error } from '../../lib/hooks/useForm'
 
 interface LoginFormProps {
   onSubmit: (values: { email: string; password: string }) => void
 }
 
-const LoginForm = ({ onSubmit }: LoginFormProps) => {
-  const emailInput = useRef<HTMLInputElement>(null)
-  const passwordInput = useRef<HTMLInputElement>(null)
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    if (emailInput.current && passwordInput.current) {
-      const email = emailInput.current.value
-      const password = passwordInput.current.value
-      if (email.length > 0 && password.length > 0) {
-        onSubmit({ email, password })
+type LoginFormSchema = {
+  email: string
+  password: string
+}
+
+const initialValues: LoginFormSchema = {
+  email: '',
+  password: '',
+}
+
+const LoginForm = ({ onSubmit: onSubmitAction }: LoginFormProps) => {
+  const eamilValidation =
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/g
+
+  const { values, handleChange, handleSubmit, errors } = useForm({
+    initialValues,
+    onSubmit: () => {
+      onSubmitAction(values)
+    },
+    validate: () => {
+      const error = {} as Error<LoginFormSchema>
+      if (!eamilValidation.test(values.email)) {
+        error.email = '올바른 이메일 형식을 입력해주세요.'
       }
-    }
-  }
+      if (values.password.length < 8) {
+        error.password = '비밀번호는 8자리 이상이어야 합니다.'
+      }
+      return error
+    },
+  })
+
+  const submittable = eamilValidation.test(values.email) && values.password.length >= 8
 
   return (
     <AuthFormTemplate type="login">
       <form onSubmit={handleSubmit}>
         <AuthFormField
-          ref={emailInput}
           label="이메일"
           name="email"
           type="email"
           placeholder="이메일"
-          required
+          value={values.email}
+          onChange={handleChange}
+          errorText={errors.email}
         />
         <AuthFormField
-          ref={passwordInput}
           label="비밀번호"
           name="password"
           type="password"
           placeholder="비밀번호"
-          required
+          value={values.password}
+          onChange={handleChange}
+          errorText={errors.password}
         />
-        <button type="submit">제출</button>
+        <button disabled={!submittable} type="submit">
+          제출
+        </button>
       </form>
     </AuthFormTemplate>
   )
