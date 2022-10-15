@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { AuthContext } from '../lib/contexts/auth'
 import { Todo } from '../lib/models/todo'
 import todoApi from '../lib/api/todo'
-import { TodoForm, TodoList } from '../components/todo'
 import todoManager from '../modules/todoManager'
+import TodoForm from '../components/Todo/TodoForm'
+import TodoList from '../components/Todo/TodoList'
 
 const TodoPage = () => {
   const authCtx = useContext(AuthContext)

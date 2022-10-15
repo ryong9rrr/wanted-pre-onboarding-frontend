@@ -1,7 +1,7 @@
 import React from 'react'
+import useForm from '../../lib/hooks/useForm'
 import AuthFormField from './AuthFormField'
 import AuthFormTemplate from './AuthFormTemplate'
-import useForm from '../../lib/hooks/useForm'
 
 interface LoginFormProps {
   onSubmit: (values: { email: string; password: string }) => void
