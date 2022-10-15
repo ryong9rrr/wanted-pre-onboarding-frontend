@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { AuthContext } from '../lib/contexts/auth'
 import { Todo } from '../lib/models/todo'
 import todoApi from '../lib/api/todo'
-import { TodoForm, TodoList } from '../components/Todo'
+import { TodoForm, TodoList } from '../components/todo'
 import todoManager from '../modules/todoManager'
 
 const TodoPage = () => {
