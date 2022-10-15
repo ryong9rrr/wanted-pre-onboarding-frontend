@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import ErrorText from './ErrorText'
+import { ErrorText } from '../UI'
 
 interface FormFieldProp extends InputHTMLAttributes<HTMLInputElement> {
   label?: string

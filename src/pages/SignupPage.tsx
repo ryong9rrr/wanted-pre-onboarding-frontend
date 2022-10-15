@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { ErrorText, SignupForm } from '../components/auth'
+import { ErrorText, SignupForm } from '../components/Auth'
 import authApi from '../lib/api/auth'
 import { AuthContext } from '../lib/contexts/auth'
 
