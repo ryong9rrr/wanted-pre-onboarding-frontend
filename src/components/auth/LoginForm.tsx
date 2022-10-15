@@ -18,27 +18,14 @@ const initialValues: LoginFormSchema = {
 }
 
 const LoginForm = ({ onSubmit: onSubmitAction }: LoginFormProps) => {
-  const eamilValidation =
-    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/g
-
   const { values, handleChange, handleSubmit, errors } = useForm({
     initialValues,
     onSubmit: () => {
       onSubmitAction(values)
     },
-    validate: () => {
-      const error = {} as Error<LoginFormSchema>
-      if (!eamilValidation.test(values.email)) {
-        error.email = '올바른 이메일 형식을 입력해주세요.'
-      }
-      if (values.password.length < 8) {
-        error.password = '비밀번호는 8자리 이상이어야 합니다.'
-      }
-      return error
-    },
   })
 
-  const submittable = eamilValidation.test(values.email) && values.password.length >= 8
+  const submittable = values.email.includes('@') && values.password.length >= 8
 
   return (
     <AuthFormTemplate type="login">
