@@ -19,15 +19,15 @@
 
 ### 회원가입 폼
 
-<img src="https://user-images.githubusercontent.com/64957267/195921937-4428928f-a951-4433-963a-b8d4866f4587.gif" />
+<img src="./assets/signup.gif" />
 
 ### 로그인 폼
 
-<img src="https://user-images.githubusercontent.com/64957267/195921946-3942ac84-f466-498d-a61a-9b4e599b256f.gif" />
+<img src="./assets/login.gif" />
 
 ### 투두리스트
 
-<img src="https://user-images.githubusercontent.com/64957267/195921953-6683d76c-7d0b-4106-b6e1-b74964a95998.gif" />
+<img src="./assets/todo.gif" />
 
 ---
 
