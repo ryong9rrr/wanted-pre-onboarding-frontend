@@ -46,6 +46,7 @@
 <h2 id="3">🛠 주요 기술 스택</h2>
 
 - npm `v8.11.0`
+- node `v16.15.1`
 - typescript
 - react (CRA)
 - react-router-dom v6 `v6.4.2`
