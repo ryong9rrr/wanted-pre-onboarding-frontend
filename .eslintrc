@@ -8,7 +8,7 @@
   },
   "extends": ["plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"],
   "parserOptions": {
-    "project": "./tsconfig.eslint.json",
+    "project": "./tsconfig.json",
     "sourceType": "module",
     "ecmaFeatures": { "jsx": true }
   },
