@@ -14,19 +14,13 @@ const createInstance = (url: string, config: AxiosRequestConfig = {}): AxiosInst
 
 const auth = (instance: AxiosInstance) => {
   const token = tokenStorage.getToken()
-  if (!token) {
-    throw new Error('Unauthorized')
-  }
   instance.interceptors.request.use(
     (config) => {
-      if (config.headers) {
-        config.headers.Authorization = `Bearer ${token}`
-      } else {
-        config.headers = {
-          Authorization: `Bearer ${token}`,
-        }
+      const newConfig = { ...config }
+      if (newConfig.headers && token) {
+        newConfig.headers.Authorization = `Bearer ${token}`
       }
-      return config
+      return newConfig
     },
     (error) => Promise.reject(error.response),
   )
