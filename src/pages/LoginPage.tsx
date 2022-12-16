@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import LoginForm from '../components/Auth/LoginForm'
 import ErrorText from '../components/UI/ErrorText'
-import authApi from '../lib/api/auth'
+import { authApi } from '../lib/api'
 import { AuthContext } from '../lib/contexts/auth'
 
 const LoginPage = () => {

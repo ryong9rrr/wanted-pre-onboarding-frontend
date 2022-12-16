@@ -1,4 +1,4 @@
-import todoApi from '../lib/api/todo'
+import { todoApi } from '../lib/api'
 import { Todo } from '../lib/models/todo'
 import debounce from '../lib/utils/debounce'
 

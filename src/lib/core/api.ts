@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { TokenServiceInterface } from '../interface'
-//const API_END_POINT = 'https://pre-onboarding-selection-task.shop/'
 
 export default class Api {
   private readonly API_END_POINT: string

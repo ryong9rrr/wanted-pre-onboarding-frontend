@@ -1,6 +1,6 @@
 import Api from '../core/api'
 
-class AuthApi extends Api {
+export default class AuthApi extends Api {
   async signup(requestBody: {
     email: string
     password: string
@@ -14,7 +14,3 @@ class AuthApi extends Api {
     return response.data
   }
 }
-
-const authApi = new AuthApi()
-
-export default authApi
