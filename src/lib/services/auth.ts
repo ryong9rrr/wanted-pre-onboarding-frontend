@@ -1,6 +1,7 @@
 import Api from '../core/api'
+import { AuthServiceInterface } from '../interface'
 
-export default class AuthApi extends Api {
+export default class AuthService extends Api implements AuthServiceInterface {
   async signup(requestBody: {
     email: string
     password: string

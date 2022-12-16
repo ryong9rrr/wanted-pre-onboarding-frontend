@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import LoginForm from '../components/Auth/LoginForm'
 import ErrorText from '../components/UI/ErrorText'
-import { authApi } from '../lib/api'
 import { AuthContext } from '../lib/contexts/auth'
 
 const LoginPage = () => {
@@ -13,8 +12,7 @@ const LoginPage = () => {
   const [feedback, setFeedback] = useState<string | null>(null)
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      const { access_token } = await authApi.login(values)
-      authCtx.login(access_token)
+      await authCtx.login(values)
       navigate('/todo')
     } catch (e) {
       if (axios.isAxiosError(e)) {

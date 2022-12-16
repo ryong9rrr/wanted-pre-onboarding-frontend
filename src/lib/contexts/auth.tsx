@@ -1,17 +1,21 @@
-import React, { useState, useCallback } from 'react'
-import { TokenServiceInterface } from '../interface'
+import React, { useState, useCallback, useMemo } from 'react'
+import { AuthServiceInterface, TokenServiceInterface } from '../interface'
 
 interface AuthState {
   token: string | null
   isLoggedIn: boolean
-  login: (token: string) => void
+  login: ({ email, password }: { email: string; password: string }) => void
+  signup: ({ email, password }: { email: string; password: string }) => void
   logout: () => void
 }
 
 const initialAuthState: AuthState = {
   token: null,
   isLoggedIn: false,
-  login: (token: string) => {
+  login: ({ email, password }: { email: string; password: string }) => {
+    return
+  },
+  signup: ({ email, password }: { email: string; password: string }) => {
     return
   },
   logout: () => {
@@ -24,9 +28,11 @@ export const AuthContext = React.createContext(initialAuthState)
 export const AuthContextProvider = ({
   children,
   tokenService,
+  authService,
 }: {
   children: React.ReactNode
   tokenService: TokenServiceInterface
+  authService: AuthServiceInterface
 }) => {
   const [token, setToken] = useState(tokenService.getToken())
 
@@ -37,17 +43,24 @@ export const AuthContextProvider = ({
     tokenService.removeToken()
   }, [])
 
-  const login = (token: string) => {
+  const login = useCallback(async (values: { email: string; password: string }) => {
+    const { access_token: token } = await authService.login(values)
     setToken(token)
     tokenService.setToken(token)
-  }
+  }, [])
 
-  const contextValue = {
-    isLoggedIn,
-    token,
-    login,
-    logout,
-  }
+  const signup = useMemo(() => authService.signup.bind(authService), [])
+
+  const contextValue = useMemo(
+    () => ({
+      isLoggedIn,
+      token,
+      signup,
+      login,
+      logout,
+    }),
+    [],
+  )
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 }

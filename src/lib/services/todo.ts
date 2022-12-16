@@ -1,7 +1,7 @@
 import { Todo } from '../models/todo'
 import Api from '../core/api'
 
-export default class TodoApi extends Api {
+export default class TodoService extends Api {
   async createTodo(requestBody: { todo: string }): Promise<Todo> {
     const response = await this.authInstance.post('/todos', requestBody)
     return response.data

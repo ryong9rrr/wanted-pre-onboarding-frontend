@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import SignupForm from '../components/Auth/SignupForm'
 import ErrorText from '../components/UI/ErrorText'
-import { authApi } from '../lib/api'
 import { AuthContext } from '../lib/contexts/auth'
 
 const SignPage = () => {
@@ -13,7 +12,7 @@ const SignPage = () => {
   const [feedback, setFeedback] = useState<string | null>(null)
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      await authApi.signup(values)
+      await authCtx.signup(values)
       setFeedback(`계정이 생성되었습니다! ${values.email}로 로그인해주세요.`)
     } catch (e) {
       if (axios.isAxiosError(e)) {
