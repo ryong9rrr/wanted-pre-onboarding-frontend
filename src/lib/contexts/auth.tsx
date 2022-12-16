@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import tokenStorage from '../utils/tokenStorage'
+import { TokenServiceInterface } from '../interface'
 
 interface AuthState {
   token: string | null
@@ -21,19 +21,25 @@ const initialAuthState: AuthState = {
 
 export const AuthContext = React.createContext(initialAuthState)
 
-export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState(tokenStorage.getToken())
+export const AuthContextProvider = ({
+  children,
+  tokenService,
+}: {
+  children: React.ReactNode
+  tokenService: TokenServiceInterface
+}) => {
+  const [token, setToken] = useState(tokenService.getToken())
 
   const isLoggedIn = !!token
 
   const logout = useCallback(() => {
     setToken(null)
-    tokenStorage.removeToken()
+    tokenService.removeToken()
   }, [])
 
   const login = (token: string) => {
     setToken(token)
-    tokenStorage.setToken(token)
+    tokenService.setToken(token)
   }
 
   const contextValue = {

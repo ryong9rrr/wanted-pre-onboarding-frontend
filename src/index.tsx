@@ -4,11 +4,16 @@ import './index.css'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from './lib/contexts/auth'
+import createStorage from './lib/repository'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
+const tokenStorage = createStorage('token', 'local')
+
+// const sampleStorage = createStorage('sample', 'session')
+
 root.render(
-  <AuthContextProvider>
+  <AuthContextProvider tokenService={tokenStorage}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
