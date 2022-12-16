@@ -8,10 +8,14 @@ import { useTodo } from '../lib/contexts/todo'
 
 const TodoPage = () => {
   const authCtx = useContext(AuthContext)
-  const { todos, createTodo, deleteTodo, editTodo, toggleTodo } = useTodo()
+  const { todos, createTodo, deleteTodo, editTodo, toggleTodo, getTodos } = useTodo()
   const navigate = useNavigate()
 
   useEffect(() => {
+    if (authCtx.isLoggedIn && authCtx.token) {
+      getTodos()
+      return
+    }
     if (!authCtx.isLoggedIn) {
       navigate('/')
     }

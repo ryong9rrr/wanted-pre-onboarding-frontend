@@ -2,13 +2,8 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { TodoContextProvider } from './lib/contexts/todo'
 import createStorage from './lib/repository'
-import { TodoService } from './lib/services'
+import { todoService } from './lib/services'
 import { SignupPage, TodoPage, LoginPage } from './pages'
-
-const API_END_POINT = 'https://pre-onboarding-selection-task.shop/'
-const tokenStorage = createStorage('token', 'local')
-
-const todoService = new TodoService(API_END_POINT, tokenStorage)
 
 function App() {
   return (

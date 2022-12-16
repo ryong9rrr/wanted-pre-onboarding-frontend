@@ -43,14 +43,11 @@ export const AuthContextProvider = ({
     tokenService.removeToken()
   }
 
-  const login = useCallback(
-    async (values: { email: string; password: string }) => {
-      const { access_token: token } = await authService.login(values)
-      setToken(token)
-      tokenService.setToken(token)
-    },
-    [token, authService, tokenService],
-  )
+  const login = async (values: { email: string; password: string }) => {
+    const { access_token: token } = await authService.login(values)
+    setToken(token)
+    tokenService.setToken(token)
+  }
 
   const signup = useMemo(() => authService.signup.bind(authService), [authService])
 

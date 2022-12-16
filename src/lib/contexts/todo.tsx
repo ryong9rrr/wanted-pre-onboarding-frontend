@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useReducer, useEffect } from 'react'
+import React, { useMemo, useContext, useReducer } from 'react'
 import { TodoServiceInterface } from '../interface'
 import { Todo } from '../models/todo'
 import { todoModule } from '../../modules'
@@ -9,6 +9,7 @@ interface TodoContextValue {
   deleteTodo: (todoId: number) => void
   toggleTodo: (todo: Todo) => void
   editTodo: (todo: Todo) => void
+  getTodos: () => void
 }
 
 const initialTodoContextValue: TodoContextValue = {
@@ -23,6 +24,9 @@ const initialTodoContextValue: TodoContextValue = {
     return
   },
   editTodo(todo) {
+    return
+  },
+  getTodos() {
     return
   },
 }
@@ -64,9 +68,10 @@ export const TodoContextProvider = ({
     })
   }
 
-  useEffect(() => {
-    todoService.getTodos().then((todos) => dispatch({ type: 'INITIALIZE', todos }))
-  }, [])
+  const getTodos = async () => {
+    const fetchedTodos = await todoService.getTodos()
+    dispatch({ type: 'INITIALIZE', todos: fetchedTodos })
+  }
 
   const contextValue = useMemo(
     () => ({
@@ -75,8 +80,9 @@ export const TodoContextProvider = ({
       deleteTodo,
       toggleTodo,
       editTodo,
+      getTodos,
     }),
-    [todos],
+    [todos, createTodo, deleteTodo, toggleTodo, editTodo, getTodos],
   )
 
   return <TodoContext.Provider value={contextValue}>{children}</TodoContext.Provider>

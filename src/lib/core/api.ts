@@ -17,7 +17,7 @@ export default class Api {
     this.authInstance = this.auth(instance)
   }
 
-  createInstance(endPoint: string, config: AxiosRequestConfig = {}): AxiosInstance {
+  private createInstance(endPoint: string, config: AxiosRequestConfig = {}): AxiosInstance {
     return axios.create({
       baseURL: endPoint,
       headers: {
@@ -27,7 +27,7 @@ export default class Api {
     })
   }
 
-  auth(instance: AxiosInstance) {
+  private auth(instance: AxiosInstance) {
     const token = this.tokenService.getToken()
     instance.interceptors.request.use(
       (config) => {
