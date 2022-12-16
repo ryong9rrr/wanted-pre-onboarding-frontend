@@ -5,7 +5,7 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from './lib/contexts/auth'
 import createStorage from './lib/repository'
-import { AuthService, TodoService } from './lib/services'
+import { AuthService } from './lib/services'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

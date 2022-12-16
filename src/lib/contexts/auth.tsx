@@ -38,18 +38,21 @@ export const AuthContextProvider = ({
 
   const isLoggedIn = !!token
 
-  const logout = useCallback(() => {
+  const logout = () => {
     setToken(null)
     tokenService.removeToken()
-  }, [])
+  }
 
-  const login = useCallback(async (values: { email: string; password: string }) => {
-    const { access_token: token } = await authService.login(values)
-    setToken(token)
-    tokenService.setToken(token)
-  }, [])
+  const login = useCallback(
+    async (values: { email: string; password: string }) => {
+      const { access_token: token } = await authService.login(values)
+      setToken(token)
+      tokenService.setToken(token)
+    },
+    [token, authService, tokenService],
+  )
 
-  const signup = useMemo(() => authService.signup.bind(authService), [])
+  const signup = useMemo(() => authService.signup.bind(authService), [authService])
 
   const contextValue = useMemo(
     () => ({
@@ -59,7 +62,7 @@ export const AuthContextProvider = ({
       login,
       logout,
     }),
-    [],
+    [isLoggedIn, token, signup, login, logout],
   )
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

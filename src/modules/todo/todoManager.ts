@@ -1,13 +1,18 @@
-import { todoApi } from '../lib/services'
-import { Todo } from '../lib/models/todo'
-import debounce from '../lib/utils/debounce'
+import { Todo } from '../../lib/models/todo'
+import { TodoServiceInterface } from '../../lib/interface'
+import debounce from '../../lib/utils/debounce'
 
 interface ManagingTodo extends Todo {
   type: 'TOGGLE'
 }
 
-class TodoManager {
-  taskQueue: ManagingTodo[] = []
+export default class TodoManager {
+  private taskQueue: ManagingTodo[] = []
+  private todoService: TodoServiceInterface
+
+  constructor(todoService: TodoServiceInterface) {
+    this.todoService = todoService
+  }
 
   toggleTodo(toggledTodo: Todo) {
     const existingTaskIdx = this.taskQueue.findIndex((todo) => todo.id === toggledTodo.id)
@@ -24,7 +29,7 @@ class TodoManager {
       const todo = this.taskQueue.shift() as ManagingTodo
       switch (todo.type) {
         case 'TOGGLE':
-          await todoApi.updateTodo(todo.id, {
+          await this.todoService.updateTodo(todo.id, {
             todo: todo.todo,
             isCompleted: !todo.isCompleted,
           })
@@ -32,7 +37,3 @@ class TodoManager {
     }
   }
 }
-
-const todoManager = new TodoManager()
-
-export default todoManager

@@ -1,47 +1,19 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { AuthContext } from '../lib/contexts/auth'
-import { Todo } from '../lib/models/todo'
-import { todoApi } from '../lib/services'
-import todoManager from '../modules/todoManager'
 import TodoForm from '../components/Todo/TodoForm'
 import TodoList from '../components/Todo/TodoList'
-import todoReducer from '../modules/todoReducer'
+import { useTodo } from '../lib/contexts/todo'
 
 const TodoPage = () => {
   const authCtx = useContext(AuthContext)
+  const { todos, createTodo, deleteTodo, editTodo, toggleTodo } = useTodo()
   const navigate = useNavigate()
-  const [todos, dispatch] = useReducer(todoReducer, [])
-
-  const handleCreateTodo = async (todo: string) => {
-    const newTodo = await todoApi.createTodo({ todo })
-    dispatch({ type: 'CREATE', newTodo })
-  }
-
-  const handleDeleteTodo = async (todoId: number) => {
-    dispatch({ type: 'DELETE', todoId })
-    await todoApi.deleteTodo(todoId)
-  }
-
-  const handleToggleTodo = async (toggledTodo: Todo) => {
-    dispatch({ type: 'TOGGLE', todo: toggledTodo })
-    todoManager.toggleTodo(toggledTodo)
-  }
-
-  const handleEditTodo = async (edittedTodo: Todo) => {
-    dispatch({ type: 'UPDATE', todo: edittedTodo })
-    await todoApi.updateTodo(edittedTodo.id, {
-      todo: edittedTodo.todo,
-      isCompleted: edittedTodo.isCompleted,
-    })
-  }
 
   useEffect(() => {
     if (!authCtx.isLoggedIn) {
       navigate('/')
-    } else {
-      todoApi.getTodos().then((todos) => dispatch({ type: 'INITIALIZE', todos }))
     }
   }, [authCtx.isLoggedIn])
 
@@ -53,12 +25,12 @@ const TodoPage = () => {
       </Header>
       <Main>
         <Wrapper>
-          <TodoForm style={{ marginBottom: '16px' }} onCreateTodo={handleCreateTodo} />
+          <TodoForm style={{ marginBottom: '16px' }} onCreateTodo={createTodo} />
           <TodoList
             todos={todos}
-            onDeleteTodo={handleDeleteTodo}
-            onToggleTodo={handleToggleTodo}
-            onEditTodo={handleEditTodo}
+            onDeleteTodo={deleteTodo}
+            onToggleTodo={toggleTodo}
+            onEditTodo={editTodo}
           />
         </Wrapper>
       </Main>

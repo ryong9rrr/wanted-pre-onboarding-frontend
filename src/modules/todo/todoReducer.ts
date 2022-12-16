@@ -7,7 +7,7 @@ type TodoAction =
   | { type: 'TOGGLE'; todo: Todo }
   | { type: 'UPDATE'; todo: Todo }
 
-function todoReducer(todos: Todo[], action: TodoAction): Todo[] {
+export default function todoReducer(todos: Todo[], action: TodoAction): Todo[] {
   switch (action.type) {
     case 'INITIALIZE':
       return [...action.todos]
@@ -33,5 +33,3 @@ function todoReducer(todos: Todo[], action: TodoAction): Todo[] {
       return todos
   }
 }
-
-export default todoReducer
